@@ -20,10 +20,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+interface User {
+    time: string,
+    city: string
+}
+
 export default function Home() {
   const [buttonPresses, setButtonPresses] = useState(0);
   const [userCity, setUserCity] = useState('hello');
-  const [recentUsers, setRecentUsers] = useState([]);
+  const [recentUsers, setRecentUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchUserCity = async () => {
@@ -45,7 +50,7 @@ export default function Home() {
 
     const recentUsersRef = query(ref(database, 'user'), orderByChild('time'), limitToLast(3));
     onValue(recentUsersRef, (snapshot) => {
-      const users = [];
+      const users: User[] = [];
       snapshot.forEach((childSnapshot) => {
         users.unshift(childSnapshot.val());
       });
@@ -61,10 +66,10 @@ export default function Home() {
     push(userRef, { time: new Date().toISOString(), city: userCity });
   };
 
-  const timeAgo = (pastTime) => {
+  const timeAgo = (pastTime: string) => {
     const currentTime = new Date();
     const pastDate = new Date(pastTime);
-    const diffInSeconds = Math.floor((currentTime - pastDate) / 1000);
+    const diffInSeconds = Math.floor((currentTime.getTime() - pastDate.getTime()) / 1000);
 
     const minutes = Math.floor(diffInSeconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -99,7 +104,7 @@ export default function Home() {
 
       <div className='flex flex-col items-center mt-6 lg:space-y-10 space-y-4'>
         <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Button has been pressed {buttonPresses} times.</p>
-        <button className='flex border border-blue-600 border-4 rounded-lg bg-blue-400 mt-2 p-4 text-blue-950 font-bold italic' onClick={handleButtonPress}>BLAST BUBBLES</button>
+        <button className='flex border-blue-600 border-4 rounded-lg bg-blue-400 mt-2 p-4 text-blue-950 font-bold italic' onClick={handleButtonPress}>BLAST BUBBLES</button>
       </div>
     </div>
     <div className="absolute top-0 right-0 text-sm">
