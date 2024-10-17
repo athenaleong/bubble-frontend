@@ -35,10 +35,25 @@ export default function Home() {
     set(buttonPressesRef, buttonPresses + 1);
   };
 
+  // Update iframe wiht new stream url 
   return (
-    <div>
-      <p>Button has been pressed {buttonPresses} times.</p>
-      <button onClick={handleButtonPress}>Press Me</button>
+    <div className='flex flex-col w-screen h-screen justify-center items-center lg:space-y-10 space-y-4'>
+      <iframe 
+        style={{ maxWidth: '100%', maxHeight: '100%' }} 
+        width="806.4" 
+        height="453.6" 
+        src="https://www.youtube.com/embed/DivI83rL03Y?si=OEDIjDbNtmRh2cXK&autoplay=1&mute=1" 
+        title="Livestream" 
+        frameBorder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        referrerPolicy="strict-origin-when-cross-origin" 
+        allowFullScreen
+      ></iframe>
+
+      <div className='flex flex-col items-center mt-6 lg:space-y-10 space-y-4'>
+        <p>Button has been pressed {buttonPresses} times.</p>
+        <button className='flex border border-blue-600 border-4 rounded-lg bg-blue-400 mt-2 p-4 text-blue-950 font-bold italic' onClick={handleButtonPress}>BLAST BUBBLES</button>
+      </div>
     </div>
-  );
+  )
 }
